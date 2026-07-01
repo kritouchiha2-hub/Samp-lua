@@ -1672,31 +1672,31 @@ imgui.OnFrame(
             imgui.SetCursorPos(imgui.ImVec2(200 * DPI, imgui.GetCursorPosY()))
             imgui.Text("Distância")
             imgui.SetCursorPos(imgui.ImVec2(360 * DPI, 125 * DPI))
-            if imgui.ToggleButton("##esp_toggle_main", imgui.ImVec2(35 * DPI, 19 * DPI), ATIVARESPS) then
+            if imgui.ToggleButton("", imgui.ImVec2(35 * DPI, 19 * DPI), ATIVARESPS) then
             end
             imgui.SetCursorPosY(imgui.GetCursorPosY() + 15 * DPI)
             imgui.SetCursorPos(imgui.ImVec2(360 * DPI, imgui.GetCursorPosY()))
-            if imgui.ToggleButton("##esp_toggle_skin", imgui.ImVec2(35 * DPI, 19 * DPI), VERIFICARSKIN) then
+            if imgui.ToggleButton("", imgui.ImVec2(35 * DPI, 19 * DPI), VERIFICARSKIN) then
             end
             imgui.SetCursorPosY(imgui.GetCursorPosY() + 15 * DPI)
             imgui.SetCursorPos(imgui.ImVec2(360 * DPI, imgui.GetCursorPosY()))
-            if imgui.ToggleButton("##esp_toggle_box", imgui.ImVec2(35 * DPI, 19 * DPI), ESP.enabled_boxes) then
+            if imgui.ToggleButton("", imgui.ImVec2(35 * DPI, 19 * DPI), ESP.enabled_boxes) then
             end
             imgui.SetCursorPosY(imgui.GetCursorPosY() + 15 * DPI)
             imgui.SetCursorPos(imgui.ImVec2(360 * DPI, imgui.GetCursorPosY()))
-            if imgui.ToggleButton("##esp_toggle_bones", imgui.ImVec2(35 * DPI, 19 * DPI), ESP.enabled_bones) then
+            if imgui.ToggleButton("", imgui.ImVec2(35 * DPI, 19 * DPI), ESP.enabled_bones) then
             end
             imgui.SetCursorPosY(imgui.GetCursorPosY() + 15 * DPI)
             imgui.SetCursorPos(imgui.ImVec2(360 * DPI, imgui.GetCursorPosY()))
-            if imgui.ToggleButton("##esp_toggle_line", imgui.ImVec2(35 * DPI, 19 * DPI), ESP.enabled_lines) then
+            if imgui.ToggleButton("", imgui.ImVec2(35 * DPI, 19 * DPI), ESP.enabled_lines) then
             end
             imgui.SetCursorPosY(imgui.GetCursorPosY() + 15 * DPI)
             imgui.SetCursorPos(imgui.ImVec2(360 * DPI, imgui.GetCursorPosY()))
-            if imgui.ToggleButton("##esp_toggle_health", imgui.ImVec2(35 * DPI, 19 * DPI), ESP.enabled_health) then
+            if imgui.ToggleButton("", imgui.ImVec2(35 * DPI, 19 * DPI), ESP.enabled_health) then
             end
             imgui.SetCursorPosY(imgui.GetCursorPosY() + 15 * DPI)
             imgui.SetCursorPos(imgui.ImVec2(360 * DPI, imgui.GetCursorPosY()))
-            if imgui.ToggleButton("##esp_toggle_distance", imgui.ImVec2(35 * DPI, 19 * DPI), ESP.enabled_distance) then
+            if imgui.ToggleButton("", imgui.ImVec2(35 * DPI, 19 * DPI), ESP.enabled_distance) then
             end
             imgui.SetCursorPos(imgui.ImVec2(447 * DPI, 130 * DPI))
             imgui.SetCursorPos(imgui.ImVec2(447 * DPI, imgui.GetCursorPosY()))
@@ -3267,7 +3267,7 @@ lua_thread.create(
                             local ok, sx, sy = convert3DCoordsToScreenEx(hx, hy, hz)
                             if ok then
                                 local health = getCharHealth(char) or 100
-                                local maxHealth = getCharMaxHealth(char) or 100
+                                local maxHealth = 100
                                 local pct = math.max(0, math.min(1, health / maxHealth))
                                 renderDrawLine(sx - 12, sy, sx - 12 + 24 * pct, sy, 2, colorToHexx(0, 1, 0, 1))
                             end
