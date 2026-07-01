@@ -1672,31 +1672,31 @@ imgui.OnFrame(
             imgui.SetCursorPos(imgui.ImVec2(200 * DPI, imgui.GetCursorPosY()))
             imgui.Text("Distância")
             imgui.SetCursorPos(imgui.ImVec2(360 * DPI, 125 * DPI))
-            if imgui.ToggleButton("", imgui.ImVec2(35 * DPI, 19 * DPI), ATIVARESPS) then
+            if imgui.ToggleButton("esp_main", imgui.ImVec2(35 * DPI, 19 * DPI), ATIVARESPS) then
             end
             imgui.SetCursorPosY(imgui.GetCursorPosY() + 15 * DPI)
             imgui.SetCursorPos(imgui.ImVec2(360 * DPI, imgui.GetCursorPosY()))
-            if imgui.ToggleButton("", imgui.ImVec2(35 * DPI, 19 * DPI), VERIFICARSKIN) then
+            if imgui.ToggleButton("esp_skin", imgui.ImVec2(35 * DPI, 19 * DPI), VERIFICARSKIN) then
             end
             imgui.SetCursorPosY(imgui.GetCursorPosY() + 15 * DPI)
             imgui.SetCursorPos(imgui.ImVec2(360 * DPI, imgui.GetCursorPosY()))
-            if imgui.ToggleButton("", imgui.ImVec2(35 * DPI, 19 * DPI), ESP.enabled_boxes) then
+            if imgui.ToggleButton("esp_box", imgui.ImVec2(35 * DPI, 19 * DPI), ESP.enabled_boxes) then
             end
             imgui.SetCursorPosY(imgui.GetCursorPosY() + 15 * DPI)
             imgui.SetCursorPos(imgui.ImVec2(360 * DPI, imgui.GetCursorPosY()))
-            if imgui.ToggleButton("", imgui.ImVec2(35 * DPI, 19 * DPI), ESP.enabled_bones) then
+            if imgui.ToggleButton("esp_bones", imgui.ImVec2(35 * DPI, 19 * DPI), ESP.enabled_bones) then
             end
             imgui.SetCursorPosY(imgui.GetCursorPosY() + 15 * DPI)
             imgui.SetCursorPos(imgui.ImVec2(360 * DPI, imgui.GetCursorPosY()))
-            if imgui.ToggleButton("", imgui.ImVec2(35 * DPI, 19 * DPI), ESP.enabled_lines) then
+            if imgui.ToggleButton("esp_line", imgui.ImVec2(35 * DPI, 19 * DPI), ESP.enabled_lines) then
             end
             imgui.SetCursorPosY(imgui.GetCursorPosY() + 15 * DPI)
             imgui.SetCursorPos(imgui.ImVec2(360 * DPI, imgui.GetCursorPosY()))
-            if imgui.ToggleButton("", imgui.ImVec2(35 * DPI, 19 * DPI), ESP.enabled_health) then
+            if imgui.ToggleButton("esp_health", imgui.ImVec2(35 * DPI, 19 * DPI), ESP.enabled_health) then
             end
             imgui.SetCursorPosY(imgui.GetCursorPosY() + 15 * DPI)
             imgui.SetCursorPos(imgui.ImVec2(360 * DPI, imgui.GetCursorPosY()))
-            if imgui.ToggleButton("", imgui.ImVec2(35 * DPI, 19 * DPI), ESP.enabled_distance) then
+            if imgui.ToggleButton("esp_distance", imgui.ImVec2(35 * DPI, 19 * DPI), ESP.enabled_distance) then
             end
             imgui.SetCursorPos(imgui.ImVec2(447 * DPI, 130 * DPI))
             imgui.SetCursorPos(imgui.ImVec2(447 * DPI, imgui.GetCursorPosY()))
