@@ -226,6 +226,7 @@ local ini = {
         espLinha = false,
         espVida = false,
         espDistancia = false,
+        espNome = false,
         offsetaimbotX = 0.520,
         offsetaimbotY = 0.439,
         offsetsilentcirculoX = 0.2704,
@@ -274,7 +275,7 @@ local FOVCircleRadius = imgui.new.float(ini.Hotwheels.tamanhodofovaimbot)
 local aimbotparede = imgui.new.bool(ini.Hotwheels.naogrudaratrasdaparedeaimbot)
 local teamsimbot = imgui.new.bool(ini.Hotwheels.naogrudaremaimgosaimbot)
 local maxdustacuahs = imgui.new.bool(ini.Hotwheels.ignorardistanciaaimbot)
-local ESP_NOME = imgui.new.bool()
+local ESP_NOME = imgui.new.bool(ini.Hotwheels.espNome or false)
 local ATIVARESPS = imgui.new.bool()
 local treze = {
     bordaaimon = imgui.new.float[4](1.00, 1.00, 1.00, 1.00),
@@ -328,6 +329,7 @@ local function loadConfig()
                 espLinha = false,
                 espVida = false,
                 espDistancia = false,
+                espNome = false,
                 offsetaimbotX = 0.520,
                 offsetaimbotY = 0.439,
                 offsetsilentcirculoX = 0.2704,
@@ -343,6 +345,7 @@ local function loadConfig()
     ESP.enabled_lines[0] = ini.Hotwheels.espLinha or false
     ESP.enabled_health[0] = ini.Hotwheels.espVida or false
     ESP.enabled_distance[0] = ini.Hotwheels.espDistancia or false
+    ESP_NOME[0] = ini.Hotwheels.espNome or false
     pescocoaimbot[0] = ini.Hotwheels.pescocoaimbot
     ombroooo[0] = ini.Hotwheels.ombroaimbott
     ombroooo22[0] = ini.Hotwheels.ombro2aimbott
@@ -1671,6 +1674,9 @@ imgui.OnFrame(
             imgui.SetCursorPosY(imgui.GetCursorPosY() + 19 * DPI)
             imgui.SetCursorPos(imgui.ImVec2(200 * DPI, imgui.GetCursorPosY()))
             imgui.Text("Distância")
+            imgui.SetCursorPosY(imgui.GetCursorPosY() + 19 * DPI)
+            imgui.SetCursorPos(imgui.ImVec2(200 * DPI, imgui.GetCursorPosY()))
+            imgui.Text("Nome")
             imgui.SetCursorPos(imgui.ImVec2(360 * DPI, 125 * DPI))
             if imgui.ToggleButton("esp_main", imgui.ImVec2(35 * DPI, 19 * DPI), ATIVARESPS) then
             end
@@ -1697,6 +1703,10 @@ imgui.OnFrame(
             imgui.SetCursorPosY(imgui.GetCursorPosY() + 15 * DPI)
             imgui.SetCursorPos(imgui.ImVec2(360 * DPI, imgui.GetCursorPosY()))
             if imgui.ToggleButton("esp_distance", imgui.ImVec2(35 * DPI, 19 * DPI), ESP.enabled_distance) then
+            end
+            imgui.SetCursorPosY(imgui.GetCursorPosY() + 15 * DPI)
+            imgui.SetCursorPos(imgui.ImVec2(360 * DPI, imgui.GetCursorPosY()))
+            if imgui.ToggleButton("esp_name", imgui.ImVec2(35 * DPI, 19 * DPI), ESP_NOME) then
             end
             imgui.SetCursorPos(imgui.ImVec2(447 * DPI, 130 * DPI))
             imgui.SetCursorPos(imgui.ImVec2(447 * DPI, imgui.GetCursorPosY()))
@@ -3162,6 +3172,7 @@ function saveConfig()
     ini.Hotwheels.espLinha = ESP.enabled_lines[0]
     ini.Hotwheels.espVida = ESP.enabled_health[0]
     ini.Hotwheels.espDistancia = ESP.enabled_distance[0]
+    ini.Hotwheels.espNome = ESP_NOME[0]
     local filename = ffi.string(configName)
     if filename:sub(1, 2) == ".." then
         filename = filename:gsub("^%.%.%.*", "")
@@ -3201,7 +3212,7 @@ lua_thread.create(
                     local charModel = getCharModel(char)
                     local verificarSkin = VERIFICARSKIN[0]
                     local myModel = getCharModel(playerPed)
-                    if verificarSkin and charModel == myModel then
+                    if verificarSkin and char ~= playerPed and charModel == myModel then
                         goto continue
                     end
                     if distance <= 999 then
@@ -3283,6 +3294,7 @@ lua_thread.create(
                 end
                 ::continue::
             end
+            espkrlh()
         end
     end
 )
