@@ -223,6 +223,9 @@ local ini = {
         distanciasilent = 9999,
         tamanhofovsilent = 200,
         chancedetirossilent = 85.0,
+        espLinha = false,
+        espVida = false,
+        espDistancia = false,
         offsetaimbotX = 0.520,
         offsetaimbotY = 0.439,
         offsetsilentcirculoX = 0.2704,
@@ -322,6 +325,9 @@ local function loadConfig()
                 distanciasilent = 9999,
                 tamanhofovsilent = 200,
                 chancedetirossilent = 85.0,
+                espLinha = false,
+                espVida = false,
+                espDistancia = false,
                 offsetaimbotX = 0.520,
                 offsetaimbotY = 0.439,
                 offsetsilentcirculoX = 0.2704,
@@ -334,6 +340,9 @@ local function loadConfig()
     SmoothX[0] = ini.Hotwheels.SuavidadeAimbot
     circuloFOVAIM[0] = ini.Hotwheels.DesenharFov
     cabecaAIM[0] = ini.Hotwheels.aimbot
+    ESP.enabled_lines[0] = ini.Hotwheels.espLinha or false
+    ESP.enabled_health[0] = ini.Hotwheels.espVida or false
+    ESP.enabled_distance[0] = ini.Hotwheels.espDistancia or false
     pescocoaimbot[0] = ini.Hotwheels.pescocoaimbot
     ombroooo[0] = ini.Hotwheels.ombroaimbott
     ombroooo22[0] = ini.Hotwheels.ombro2aimbott
@@ -381,6 +390,9 @@ local ESP = {
     FONT = renderCreateFont("Arial", SCREEN_H * 0.01, 1 + 4),
     enabled_bones = imgui.new.bool(false),
     enabled_boxes = imgui.new.bool(false),
+    enabled_lines = imgui.new.bool(false),
+    enabled_health = imgui.new.bool(false),
+    enabled_distance = imgui.new.bool(false),
     enabled_nicks = imgui.new.bool(false)
 }
 imgui.OnInitialize(
@@ -1650,6 +1662,15 @@ imgui.OnFrame(
             imgui.SetCursorPosY(imgui.GetCursorPosY() + 19 * DPI)
             imgui.SetCursorPos(imgui.ImVec2(200 * DPI, imgui.GetCursorPosY()))
             imgui.Text("Esqueleto")
+            imgui.SetCursorPosY(imgui.GetCursorPosY() + 19 * DPI)
+            imgui.SetCursorPos(imgui.ImVec2(200 * DPI, imgui.GetCursorPosY()))
+            imgui.Text("Linha")
+            imgui.SetCursorPosY(imgui.GetCursorPosY() + 19 * DPI)
+            imgui.SetCursorPos(imgui.ImVec2(200 * DPI, imgui.GetCursorPosY()))
+            imgui.Text("Vida")
+            imgui.SetCursorPosY(imgui.GetCursorPosY() + 19 * DPI)
+            imgui.SetCursorPos(imgui.ImVec2(200 * DPI, imgui.GetCursorPosY()))
+            imgui.Text("Distância")
             imgui.SetCursorPos(imgui.ImVec2(360 * DPI, 125 * DPI))
             if imgui.ToggleButton("        ", imgui.ImVec2(35 * DPI, 19 * DPI), ATIVARESPS) then
             end
@@ -1664,6 +1685,18 @@ imgui.OnFrame(
             imgui.SetCursorPosY(imgui.GetCursorPosY() + 15 * DPI)
             imgui.SetCursorPos(imgui.ImVec2(360 * DPI, imgui.GetCursorPosY()))
             if imgui.ToggleButton(" ", imgui.ImVec2(35 * DPI, 19 * DPI), ESP.enabled_bones) then
+            end
+            imgui.SetCursorPosY(imgui.GetCursorPosY() + 15 * DPI)
+            imgui.SetCursorPos(imgui.ImVec2(360 * DPI, imgui.GetCursorPosY()))
+            if imgui.ToggleButton("  ", imgui.ImVec2(35 * DPI, 19 * DPI), ESP.enabled_lines) then
+            end
+            imgui.SetCursorPosY(imgui.GetCursorPosY() + 15 * DPI)
+            imgui.SetCursorPos(imgui.ImVec2(360 * DPI, imgui.GetCursorPosY()))
+            if imgui.ToggleButton("  ", imgui.ImVec2(35 * DPI, 19 * DPI), ESP.enabled_health) then
+            end
+            imgui.SetCursorPosY(imgui.GetCursorPosY() + 15 * DPI)
+            imgui.SetCursorPos(imgui.ImVec2(360 * DPI, imgui.GetCursorPosY()))
+            if imgui.ToggleButton("  ", imgui.ImVec2(35 * DPI, 19 * DPI), ESP.enabled_distance) then
             end
             imgui.SetCursorPos(imgui.ImVec2(447 * DPI, 130 * DPI))
             imgui.SetCursorPos(imgui.ImVec2(447 * DPI, imgui.GetCursorPosY()))
@@ -3121,6 +3154,9 @@ function saveConfig()
     ini.Hotwheels.naogrudaratrasdaparedeaimbot = aimbotparede[0]
     ini.Hotwheels.naogrudaremaimgosaimbot = teamsimbot[0]
     ini.Hotwheels.ignorardistanciaaimbot = maxdustacuahs[0]
+    ini.Hotwheels.espLinha = ESP.enabled_lines[0]
+    ini.Hotwheels.espVida = ESP.enabled_health[0]
+    ini.Hotwheels.espDistancia = ESP.enabled_distance[0]
     local filename = ffi.string(configName)
     if filename:sub(1, 2) == ".." then
         filename = filename:gsub("^%.%.%.*", "")
@@ -3159,6 +3195,7 @@ lua_thread.create(
                     local distance = getDistanceBetweenCoords3d(px, py, pz, cx, cy, cz)
                     local charModel = getCharModel(char)
                     local verificarSkin = VERIFICARSKIN[0]
+                    local myModel = getCharModel(playerPed)
                     if verificarSkin and charModel == myModel then
                         goto continue
                     end
@@ -3202,15 +3239,39 @@ lua_thread.create(
                             if char ~= playerPed then
                                 local x1, y1, z1 = getCharCoordinates(playerPed)
                                 local x2, y2, z2 = getCharCoordinates(char)
-                                local isClearLOS =
-                                    isLineOfSightClear(x1, y1, z1, x2, y2, z2, true, true, false, true, true)
                                 local headx, heady = convert3DCoordsToScreen(x2, y2, z2 + 1.20)
                                 local footx, footy = convert3DCoordsToScreen(x2, y2, z2 - 1.20)
-                                local width = math.abs((heady - footy) * 0.22)
-                                renderDrawLine(headx - width, heady, headx + width, heady, 1, espColorr)
-                                renderDrawLine(headx + width, heady, headx + width, footy, 1, espColorr)
-                                renderDrawLine(headx + width, footy, headx - width, footy, 1, espColorr)
-                                renderDrawLine(headx - width, footy, headx - width, heady, 1, espColorr)
+                                if headx and footx then
+                                    local width = math.abs((heady - footy) * 0.22)
+                                    renderDrawLine(headx - width, heady, headx + width, heady, 1, espColorr)
+                                    renderDrawLine(headx + width, heady, headx + width, footy, 1, espColorr)
+                                    renderDrawLine(headx + width, footy, headx - width, footy, 1, espColorr)
+                                    renderDrawLine(headx - width, footy, headx - width, heady, 1, espColorr)
+                                end
+                            end
+                        end
+                        if ESP.enabled_lines[0] and ATIVARESPS[0] and char ~= playerPed then
+                            local sx, sy = getScreenResolution()
+                            local screenX, screenY = convert3DCoordsToScreen(cx, cy, cz)
+                            if screenX and screenY then
+                                renderDrawLine(sx / 2, sy, screenX, screenY, 1, espColor)
+                            end
+                        end
+                        if ESP.enabled_health[0] and ATIVARESPS[0] and char ~= playerPed then
+                            local hx, hy, hz = getBonePosition(char, 8)
+                            local ok, sx, sy = convert3DCoordsToScreenEx(hx, hy, hz)
+                            if ok then
+                                local health = getCharHealth(char) or 100
+                                local maxHealth = getCharMaxHealth(char) or 100
+                                local pct = math.max(0, math.min(1, health / maxHealth))
+                                renderDrawLine(sx - 12, sy, sx - 12 + 24 * pct, sy, 2, colorToHexx(0, 1, 0, 1))
+                            end
+                        end
+                        if ESP.enabled_distance[0] and ATIVARESPS[0] and char ~= playerPed then
+                            local ok, sx, sy = convert3DCoordsToScreenEx(cx, cy, cz)
+                            if ok then
+                                local distText = string.format("%.0fm", distance)
+                                renderFontDrawText(ESP.FONT, distText, sx + 4, sy + 4, espColor)
                             end
                         end
                     end
