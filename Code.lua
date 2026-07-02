@@ -3306,18 +3306,9 @@ lua_thread.create(
                 end
                 ::continue::
             end
-            espkrlh()
         end
-    end
-)
-function colorToHexx(r, g, b, a)
-    return bit.bor(
-        bit.lshift(math.floor(a * 255), 24),
-        bit.lshift(math.floor(r * 255), 16),
-        bit.lshift(math.floor(g * 255), 8),
-        math.floor(b * 255)
-    )
-end
+    end)
+
 local function drawAdminStaffESP(char, id, cx, cy, cz)
     if not ATIVARESPS[0] or not ESP.enabled_admin[0] then
         return
@@ -3343,6 +3334,15 @@ local function isAdminLikeName(name)
     end
     local lowered = name:lower()
     return lowered:find("adm") ~= nil or lowered:find("admin") ~= nil or lowered:find("staff") ~= nil or lowered:find("mod") ~= nil or lowered:find("owner") ~= nil or lowered:find("helper") ~= nil
+end
+
+function colorToHexx(r, g, b, a)
+    return bit.bor(
+        bit.lshift(math.floor(a * 255), 24),
+        bit.lshift(math.floor(r * 255), 16),
+        bit.lshift(math.floor(g * 255), 8),
+        math.floor(b * 255)
+    )
 end
 
 function espkrlh()
