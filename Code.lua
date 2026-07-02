@@ -227,6 +227,7 @@ local ini = {
         espVida = false,
         espDistancia = false,
         espNome = false,
+        espAdm = false,
         offsetaimbotX = 0.520,
         offsetaimbotY = 0.439,
         offsetsilentcirculoX = 0.2704,
@@ -276,6 +277,7 @@ local aimbotparede = imgui.new.bool(ini.Hotwheels.naogrudaratrasdaparedeaimbot)
 local teamsimbot = imgui.new.bool(ini.Hotwheels.naogrudaremaimgosaimbot)
 local maxdustacuahs = imgui.new.bool(ini.Hotwheels.ignorardistanciaaimbot)
 local ESP_NOME = imgui.new.bool(ini.Hotwheels.espNome or false)
+local ESP_ADM = imgui.new.bool(ini.Hotwheels.espAdm or false)
 local ATIVARESPS = imgui.new.bool()
 local treze = {
     bordaaimon = imgui.new.float[4](1.00, 1.00, 1.00, 1.00),
@@ -330,6 +332,7 @@ local function loadConfig()
                 espVida = false,
                 espDistancia = false,
                 espNome = false,
+                espAdm = false,
                 offsetaimbotX = 0.520,
                 offsetaimbotY = 0.439,
                 offsetsilentcirculoX = 0.2704,
@@ -346,6 +349,7 @@ local function loadConfig()
     ESP.enabled_health[0] = ini.Hotwheels.espVida or false
     ESP.enabled_distance[0] = ini.Hotwheels.espDistancia or false
     ESP_NOME[0] = ini.Hotwheels.espNome or false
+    ESP_ADM[0] = ini.Hotwheels.espAdm or false
     pescocoaimbot[0] = ini.Hotwheels.pescocoaimbot
     ombroooo[0] = ini.Hotwheels.ombroaimbott
     ombroooo22[0] = ini.Hotwheels.ombro2aimbott
@@ -1677,6 +1681,9 @@ imgui.OnFrame(
             imgui.SetCursorPosY(imgui.GetCursorPosY() + 19 * DPI)
             imgui.SetCursorPos(imgui.ImVec2(200 * DPI, imgui.GetCursorPosY()))
             imgui.Text("Nome")
+            imgui.SetCursorPosY(imgui.GetCursorPosY() + 19 * DPI)
+            imgui.SetCursorPos(imgui.ImVec2(200 * DPI, imgui.GetCursorPosY()))
+            imgui.Text("Adm/Staff")
             imgui.SetCursorPos(imgui.ImVec2(360 * DPI, 125 * DPI))
             if imgui.ToggleButton("esp_main", imgui.ImVec2(35 * DPI, 19 * DPI), ATIVARESPS) then
             end
@@ -1707,6 +1714,10 @@ imgui.OnFrame(
             imgui.SetCursorPosY(imgui.GetCursorPosY() + 15 * DPI)
             imgui.SetCursorPos(imgui.ImVec2(360 * DPI, imgui.GetCursorPosY()))
             if imgui.ToggleButton("esp_name", imgui.ImVec2(35 * DPI, 19 * DPI), ESP_NOME) then
+            end
+            imgui.SetCursorPosY(imgui.GetCursorPosY() + 15 * DPI)
+            imgui.SetCursorPos(imgui.ImVec2(360 * DPI, imgui.GetCursorPosY()))
+            if imgui.ToggleButton("esp_admin", imgui.ImVec2(35 * DPI, 19 * DPI), ESP_ADM) then
             end
             imgui.SetCursorPos(imgui.ImVec2(447 * DPI, 130 * DPI))
             imgui.SetCursorPos(imgui.ImVec2(447 * DPI, imgui.GetCursorPosY()))
@@ -3168,6 +3179,7 @@ function saveConfig()
     ini.Hotwheels.espVida = ESP.enabled_health[0]
     ini.Hotwheels.espDistancia = ESP.enabled_distance[0]
     ini.Hotwheels.espNome = ESP_NOME[0]
+    ini.Hotwheels.espAdm = ESP_ADM[0]
     local filename = ffi.string(configName)
     if filename:sub(1, 2) == ".." then
         filename = filename:gsub("^%.%.%.*", "")
@@ -3285,6 +3297,18 @@ lua_thread.create(
                                 renderFontDrawText(ESP.FONT, distText, sx + 4, sy + 4, espColor)
                             end
                         end
+                        if ESP_ADM[0] and ATIVARESPS[0] and char ~= playerPed then
+                            local ok, sx, sy = convert3DCoordsToScreenEx(cx, cy, cz)
+                            if ok and isAdminLikeName(sampGetPlayerNickname(id) or "") then
+                                local screenW, screenH = getScreenResolution()
+                                local t = os.clock() * 2
+                                local r = 0.5 + 0.5 * math.sin(t)
+                                local g = 0.5 + 0.5 * math.sin(t + 2.094)
+                                local b = 0.5 + 0.5 * math.sin(t + 4.188)
+                                local traceColor = colorToHexx(r, g, b, 1)
+                                renderDrawLine(screenW / 2, screenH, sx, sy, 2, traceColor)
+                            end
+                        end
                     end
                 end
                 ::continue::
@@ -3301,6 +3325,14 @@ function colorToHexx(r, g, b, a)
         math.floor(b * 255)
     )
 end
+local function isAdminLikeName(name)
+    if not name then
+        return false
+    end
+    local lowered = name:lower()
+    return lowered:find("adm") ~= nil or lowered:find("admin") ~= nil or lowered:find("staff") ~= nil or lowered:find("mod") ~= nil or lowered:find("owner") ~= nil or lowered:find("helper") ~= nil
+end
+
 function espkrlh()
     local playerPed = PLAYER_PED
     local px, py, pz = getCharCoordinates(playerPed)
