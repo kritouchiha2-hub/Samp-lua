@@ -1973,7 +1973,6 @@ local function drawTrailsXYZ(selecf)
            end              
         imgui.End()
     end
-)
 imgui.OnFrame(
     function()
         return v[0]
