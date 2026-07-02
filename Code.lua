@@ -2791,11 +2791,6 @@ function imgui.ToggleButton(label, size, bool)
         imgui.GetColorU32Vec4(circleColor),
         circleSegments
     )
-    dl:AddText(
-        imgui.ImVec2(p.x + size.x + r, p.y + r - (r / 2) - (imgui.CalcTextSize(label).y / 4)),
-        imgui.GetColorU32Vec4(imgui.GetStyle().Colors[imgui.Col.Text]),
-        label
-    )
     return anim
 end
 function imgui.interfacetreze(index, item, size, duration)
