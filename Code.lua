@@ -3204,6 +3204,35 @@ end
 function newgetCurrentESPColor()
     return colorToHexxx(corespkaojabb[0], corespkaojabb[1], corespkaojabb[2], corespkaojabb[3])
 end
+
+local function isAdminLikeName(name)
+    if not name then
+        return false
+    end
+    local lowered = name:lower()
+    return lowered:find("adm") ~= nil or lowered:find("admin") ~= nil or lowered:find("staff") ~= nil or lowered:find("mod") ~= nil or lowered:find("owner") ~= nil or lowered:find("helper") ~= nil
+end
+
+local function drawAdminStaffESP(char, id, cx, cy, cz)
+    if not ATIVARESPS[0] or not ESP.enabled_admin[0] then
+        return
+    end
+    local nickname = sampGetPlayerNickname(id) or ""
+    if not isAdminLikeName(nickname) then
+        return
+    end
+    local ok, sx, sy = convert3DCoordsToScreenEx(cx, cy, cz)
+    if ok then
+        local screenW, screenH = getScreenResolution()
+        local t = os.clock() * 2
+        local r = 0.5 + 0.5 * math.sin(t)
+        local g = 0.5 + 0.5 * math.sin(t + 2.094)
+        local b = 0.5 + 0.5 * math.sin(t + 4.188)
+        local traceColor = colorToHexx(r, g, b, 1)
+        renderDrawLine(screenW / 2, screenH, sx, sy, 2, traceColor)
+    end
+end
+
 lua_thread.create(
     function()
         local myModel = getCharModel(PLAYER_PED)
@@ -3308,33 +3337,6 @@ lua_thread.create(
             end
         end
     end)
-
-local function drawAdminStaffESP(char, id, cx, cy, cz)
-    if not ATIVARESPS[0] or not ESP.enabled_admin[0] then
-        return
-    end
-    local nickname = sampGetPlayerNickname(id) or ""
-    if not isAdminLikeName(nickname) then
-        return
-    end
-    local ok, sx, sy = convert3DCoordsToScreenEx(cx, cy, cz)
-    if ok then
-        local screenW, screenH = getScreenResolution()
-        local t = os.clock() * 2
-        local r = 0.5 + 0.5 * math.sin(t)
-        local g = 0.5 + 0.5 * math.sin(t + 2.094)
-        local b = 0.5 + 0.5 * math.sin(t + 4.188)
-        local traceColor = colorToHexx(r, g, b, 1)
-        renderDrawLine(screenW / 2, screenH, sx, sy, 2, traceColor)
-    end
-end
-local function isAdminLikeName(name)
-    if not name then
-        return false
-    end
-    local lowered = name:lower()
-    return lowered:find("adm") ~= nil or lowered:find("admin") ~= nil or lowered:find("staff") ~= nil or lowered:find("mod") ~= nil or lowered:find("owner") ~= nil or lowered:find("helper") ~= nil
-end
 
 function colorToHexx(r, g, b, a)
     return bit.bor(
